@@ -2,30 +2,16 @@
 # By utilizing cache in LLM application, we can reduce the number of API calls to the LangSmith API and OpenAI API.
 import os
 import time
-from dotenv import load_dotenv
+from credentials.get_api_credentials import get_api_credentials
 from langsmith import Client, traceable
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain.globals import set_llm_cache
 from langchain_community.cache import InMemoryCache
 
-load_dotenv()
+get_api_credentials()
 
-openai_api_key      = os.getenv("OPENAI_API_KEY", "")
-langsmith_api_key   = os.getenv("LANGSMITH_API_KEY", "")
-
-if not openai_api_key and not openai_api_key.startswith("sk-"):
-    raise ValueError("OPENAI_API_KEY is not set in the environment variables")
-if not langsmith_api_key and not langsmith_api_key.startswith("lsv2-"):
-    raise ValueError("LANGSMITH_API_KEY is not set in the environment variables")
-
-os.environ["OPENAI_API_KEY"] = openai_api_key
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
-os.environ["LANGCHAIN_API_KEY"] = langsmith_api_key
-
-# Initialize LangSmith client
-langsmith_client = Client(api_key=langsmith_api_key)
+langsmith_client = Client(api_key=os.environ["LANGCHAIN_API_KEY"])
 
 # Create the LLM
 llm = ChatOpenAI(

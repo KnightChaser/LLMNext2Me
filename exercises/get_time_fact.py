@@ -1,25 +1,11 @@
 # get_time_fact.py
 
-import os
-from dotenv import load_dotenv
+from credentials.get_api_credentials import get_api_credentials
 from langchain.output_parsers import DatetimeOutputParser
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 
-load_dotenv()
-
-openai_api_key      = os.getenv("OPENAI_API_KEY", "")
-langsmith_api_key   = os.getenv("LANGSMITH_API_KEY", "")
-
-if not openai_api_key and not openai_api_key.startswith("sk-"):
-    raise ValueError("OPENAI_API_KEY is not set in the environment variables")
-if not langsmith_api_key and not langsmith_api_key.startswith("lsv2-"):
-    raise ValueError("LANGSMITH_API_KEY is not set in the environment variables")
-
-os.environ["OPENAI_API_KEY"] = openai_api_key
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
-os.environ["LANGCHAIN_API_KEY"] = langsmith_api_key
+get_api_credentials()
 
 output_parser = DatetimeOutputParser()
 output_parser.format = "%Y-%m-%d"

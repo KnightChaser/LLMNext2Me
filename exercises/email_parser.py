@@ -1,32 +1,18 @@
 # email_parser.py
 import os
+from credentials.get_api_credentials import get_api_credentials
 from pprint import pprint
-from dotenv import load_dotenv
 from langsmith import Client, traceable
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain.output_parsers import PydanticOutputParser
 from pydantic import BaseModel, Field, EmailStr
 
-load_dotenv()
-
-openai_api_key      = os.getenv("OPENAI_API_KEY", "")
-langsmith_api_key   = os.getenv("LANGSMITH_API_KEY", "")
-
-if not openai_api_key and not openai_api_key.startswith("sk-"):
-    raise ValueError("OPENAI_API_KEY is not set in the environment variables")
-if not langsmith_api_key and not langsmith_api_key.startswith("lsv2-"):
-    raise ValueError("LANGSMITH_API_KEY is not set in the environment variables")
-
-os.environ["OPENAI_API_KEY"] = openai_api_key
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
-os.environ["LANGCHAIN_API_KEY"] = langsmith_api_key
+get_api_credentials()
 
 # Initialize LangSmith client
-langsmith_client = Client(api_key=langsmith_api_key)
+langsmith_client = Client(api_key=os.environ["LANGCHAIN_API_KEY"])
 
-# Define the schema using Pydantic
 class EmailSummaryStructure(BaseModel):
     sender: str               = Field(..., title="Sender", description="The email sender")
     sender_email: EmailStr    = Field(..., title="Sender Email", description="The email sender's email address")
