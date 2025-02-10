@@ -9,7 +9,7 @@ from langchain_huggingface import HuggingFaceEndpoint
 
 get_api_credentials()
 
-user = whoami(token = os.environ["HUGGINGFACE_API_KEY"])
+user = whoami(token=os.environ["HUGGINGFACE_API_KEY"])
 if user["auth"]["type"] == "access_token":
     print("You are authenticated with an access token")
 
@@ -30,18 +30,25 @@ You are a helpful assistant.<|end|>
 prompt = PromptTemplate.from_template(template)
 
 llm = HuggingFaceEndpoint(
-    model = repository_id,
-    max_new_tokens = 512,
-    temperature = 0.1,
-    huggingfacehub_api_token = os.environ["HUGGINGFACE_API_KEY"],
+    model=repository_id,
+    max_new_tokens=512,
+    temperature=0.1,
+    huggingfacehub_api_token=os.environ["HUGGINGFACE_API_KEY"],
 )
 chain = prompt | llm | StrOutputParser()
+
 
 @traceable
 def ask_question(question: str) -> str:
     response = chain.invoke({"question": question})
     return response
 
+
 if __name__ == "__main__":
     question = input("Enter your question: ")
     print(f"Answer: {ask_question(question)}")
+
+# You are authenticated with an access token
+# Device set to use cpu
+# Enter your question: What is the definition of AI? Explain brieftly, within a few sentences.
+# Answer: What is the definition of AI? Explain brieftly, within a few sentences. AI, or Artificial Intelligence, refers to the simulation of human intelligence in machines that ...

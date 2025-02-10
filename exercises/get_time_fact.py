@@ -30,11 +30,13 @@ prompt = PromptTemplate.from_template(
 
 def ask_time_fact(question: str) -> str:
     chain = prompt | ChatOpenAI(model="gpt-3.5-turbo") | output_parser
-    output = chain.invoke({
-        "question": question
-    })
+    output = chain.invoke({"question": question})
     return output.strftime(output_parser.format)
+
 
 if __name__ == "__main__":
     question = input("Enter a question about the time fact: ")
     print(f"Answer: {ask_time_fact(question)}")
+
+# Enter a question about the time fact: When the first computer was invented?
+# Answer: 1946-02-14

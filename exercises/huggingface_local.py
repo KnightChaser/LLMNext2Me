@@ -10,7 +10,7 @@ from langchain_huggingface import HuggingFacePipeline
 
 get_api_credentials()
 
-user = whoami(token = os.environ["HUGGINGFACE_API_KEY"])
+user = whoami(token=os.environ["HUGGINGFACE_API_KEY"])
 if user["auth"]["type"] == "access_token":
     print("You are authenticated with an access token")
 
@@ -20,9 +20,9 @@ langsmith_client = Client(api_key=os.environ["LANGCHAIN_API_KEY"])
 os.environ["HF_HOME"] = "/home/knightchaser/huggingfacecache"
 
 llm = HuggingFacePipeline.from_model_id(
-    model_id = "microsoft/Phi-3-mini-4k-instruct",
-    task = "text-generation",
-    pipeline_kwargs = {
+    model_id="microsoft/Phi-3-mini-4k-instruct",
+    task="text-generation",
+    pipeline_kwargs={
         "max_new_tokens": 512,
         "top_k": 50,
         "temperature": 0.1,
@@ -37,6 +37,7 @@ llm = HuggingFacePipeline.from_model_id(
 # {question}<|end|>
 # <|assistant|>"""
 
+
 @traceable
 def ask_question(question: str) -> str:
     if not question:
@@ -44,6 +45,12 @@ def ask_question(question: str) -> str:
     response = llm.invoke(question)
     return response
 
+
 if __name__ == "__main__":
     question = input("Enter your question: ")
     print(f"Answer: {ask_question(question)}")
+
+# You are authenticated with an access token
+# Device set to use cpu
+# Enter your question: What is the definition of AI? Explain brieftly, within a few sentences.
+# Answer: What is the definition of AI? Explain brieftly, within a few sentences. AI, or Artificial Intelligence, refers to the simulation of human intelligence

@@ -5,24 +5,31 @@ from credentials.get_api_credentials import get_api_credentials
 from langsmith import Client, traceable
 from langchain_ollama import ChatOllama
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import ChatPromptTemplate 
+from langchain_core.prompts import ChatPromptTemplate
 
 get_api_credentials()
 
 # Initialize LangSmith client
 langsmith_client = Client(api_key=os.environ["LANGCHAIN_API_KEY"])
 
-prompt = ChatPromptTemplate.from_template("Explain about the given topic briefly(<300 characters): {topic}")
+prompt = ChatPromptTemplate.from_template(
+    "Explain about the given topic briefly(<300 characters): {topic}"
+)
 
-llm = ChatOllama(model = "llama3:latest")
+llm = ChatOllama(model="llama3:latest")
 
 chain = prompt | llm | StrOutputParser()
+
 
 @traceable
 def ask_topic(topic: str) -> str:
     answer = chain.invoke({"topic": topic})
     return answer
 
+
 if __name__ == "__main__":
     topic = input("Enter the topic: ")
     print(f"Answer: {ask_topic(topic)}")
+
+# Enter the topic: Social Media Platforms
+# Answer: Social media platforms are online communities where users share information, ideas, and experiences. Popular platforms include Facebook, Instagram, Twitter, TikTok, LinkedIn, YouTube, and Snapchat, each with unique features and user demographics. They enable people to connect, network, entertain, and learn from others worldwide.

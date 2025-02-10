@@ -22,6 +22,7 @@ get_api_credentials()
 # Initialize LangSmith client
 langsmith_client = Client(api_key=os.environ["LANGCHAIN_API_KEY"])
 
+
 def create_retriever(file_path: str) -> VectorStoreRetriever:
     """
     Load a PDF file, split it into chunks, create embeddings,
@@ -32,21 +33,16 @@ def create_retriever(file_path: str) -> VectorStoreRetriever:
     documents = loader.load()
 
     # Split documents
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=50
-    )
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=50)
     split_documents = text_splitter.split_documents(documents)
 
     # Create embeddings and vector store
     embeddings = OpenAIEmbeddings()
-    vectorstore = FAISS.from_documents(
-        documents=split_documents,
-        embedding=embeddings
-    )
+    vectorstore = FAISS.from_documents(documents=split_documents, embedding=embeddings)
 
     retriever = vectorstore.as_retriever()
     return retriever
+
 
 def embed_file(file_path: str) -> VectorStoreRetriever:
     """
@@ -56,11 +52,13 @@ def embed_file(file_path: str) -> VectorStoreRetriever:
         raise FileNotFoundError(f"File not found: {file_path}")
     return create_retriever(file_path)
 
+
 def format_document(document_list):
     """
     Format retrieved documents into a single string.
     """
     return "\n\n".join([doc.page_content for doc in document_list])
+
 
 @traceable
 def create_rag_llm_chain(retriever: VectorStoreRetriever):
@@ -72,8 +70,7 @@ def create_rag_llm_chain(retriever: VectorStoreRetriever):
 
     # Configure the local Ollama model
     llm = ChatOllama(
-        model="llama3:latest",   # adjust to your local model name
-        temperature=0.0
+        model="llama3:latest", temperature=0.0  # adjust to your local model name
     )
 
     # Construct a chain of Runnables:
@@ -81,16 +78,14 @@ def create_rag_llm_chain(retriever: VectorStoreRetriever):
     #   2. "question": a simple passthrough of the user input
     #   3. The result is then fed into 'prompt' -> 'llm' -> 'StrOutputParser'
     chain = (
-        {
-            "context": retriever | format_document,
-            "question": RunnablePassthrough()
-        }
+        {"context": retriever | format_document, "question": RunnablePassthrough()}
         | prompt
         | llm
         | StrOutputParser()
     )
 
     return chain
+
 
 def main():
     parser = argparse.ArgumentParser(description="Local PDF-based RAG with LLM.")
@@ -104,7 +99,7 @@ def main():
 
     # Create the retriever
     retriever = embed_file(pdf_path)
-    
+
     # Create the RAG chain
     chain = create_rag_llm_chain(retriever)
 
@@ -121,6 +116,21 @@ def main():
 
         print(f"LLM: {response}\n")
 
+
 if __name__ == "__main__":
     main()
 
+# (Used Microsoft Digital Defense Report 2024 Overview.pdf)
+# Type your questions about the PDF. Type '/bye' to exit.
+#
+# You: What are main themes of the given PDF document?
+# LLM: Based on the provided information, the main themes of the Microsoft Digital Defense Report 2024 Overview appear to be:
+#
+# 1. The evolving cyber threat landscape and its implications for security.
+# 2. The role of artificial intelligence (AI) in cybersecurity and its potential impact.
+# 3. The importance of centering organizations on security and preserving privacy.
+# 4. Strategic approaches to cybersecurity, including collective action and supporting the ecosystem.
+#
+# These themes are evident throughout the report's introduction, key developments, and actionable insights sections.
+#
+# You:
