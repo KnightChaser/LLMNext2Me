@@ -1,4 +1,8 @@
 # recursive_character_text_splitter.py
+"""
+RecursiveCharacterTextSplitter is a text splitter that splits the text into chunks based on the number of characters in each chunk.
+Almost cases of texts are suitable with RecursiveCharacterTextSplitter.
+"""
 from typing import List
 from pprint import pprint
 from langchain_core.documents import Document
@@ -23,3 +27,11 @@ print(texts[1])  # The second chunk of the text
 # Or, split the text into chunks
 print("=" * 50)
 pprint(text_splitter.split_text(file))  # The list of chunks of the text
+
+# page_content='**Cosmic Nexus Aerospace – Q3 Sales Report**'
+# ==================================================
+# page_content='*Executive Summary*
+# Cosmic Nexus Aerospace had a dynamic third quarter marked by solid revenue growth, a few hard lessons, and a clear path forward. Our primary business—manufacturing spacecraft, providing launch services, and managing an array of space-related projects—continues to disrupt a crowded market. We’ve seen encouraging momentum, even if we’ve had to own up to some misfires along the way. No sugar-coating: it’s been a quarter of both significant wins and critical challenges.'
+# ==================================================
+# ['**Cosmic Nexus Aerospace – Q3 Sales Report**',
+#  '*Executive Summary*  \n'
