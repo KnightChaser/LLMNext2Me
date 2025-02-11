@@ -66,3 +66,13 @@ for iteration in range(2):
     elapsed_time = time.time() - start_time
     print(f"Embedding and storing the documents took {elapsed_time:.6f} seconds.")
     print(f"Number of documents: {len(documents)}\n")
+
+# Iteration 1:
+# Database entries (empty if initially created): []
+# Embedding and storing the documents took 0.401002 seconds.
+# Number of documents: 5
+#
+# Iteration 2:
+# Database entries (empty if initially created): ['text-embedding-ada-0028f842ef1-7f6e-562d-a013-265661bec540', 'text-embedding-ada-00208eeab16-cda3-58a7-9a6f-82cd27bbfe93', 'text-embedding-ada-002f60b31aa-6d7c-512a-8781-6a3960078860', 'text-embedding-ada-00284310a7c-9334-5a82-9922-d7edf9c6893d', 'text-embedding-ada-0020b27d4f1-5139-531e-a857-1ade8b0fd2fe']
+# Embedding and storing the documents took 0.001854 seconds.
+# Number of documents: 5
