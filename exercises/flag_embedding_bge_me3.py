@@ -44,3 +44,18 @@ if __name__ == "__main__":
             print(
                 f"ColBERT score ({score:.4f}) => {sample_texts[i]} <---> {sample_texts[j]}"
             )
+
+# Model: BAAI/bge-m3 (via BGEM3FlagModel with FP16)
+# Number of sentences: 5
+# Encoding execution time: 0.1071 seconds
+#
+# ColBERT score (0.7781) => Passion fuels creativity. <---> Emotion inspires art.
+# ColBERT score (0.7265) => Passion fuels creativity. <---> Feelings drive action.
+# ColBERT score (0.7223) => Passion fuels creativity. <---> Love motivates change.
+# ColBERT score (0.7811) => Passion fuels creativity. <---> Desire sparks innovation.
+# ColBERT score (0.7702) => Emotion inspires art. <---> Feelings drive action.
+# ColBERT score (0.7010) => Emotion inspires art. <---> Love motivates change.
+# ColBERT score (0.7103) => Emotion inspires art. <---> Desire sparks innovation.
+# ColBERT score (0.7394) => Feelings drive action. <---> Love motivates change.
+# ColBERT score (0.7469) => Feelings drive action. <---> Desire sparks innovation.
+# ColBERT score (0.7616) => Love motivates change. <---> Desire sparks innovation.
