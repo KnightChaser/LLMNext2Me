@@ -7,6 +7,12 @@ document chunks, then retrieve documents using an embeddings-based filter to rem
 unnecessary passages before LLM response generation. Unlike the LLM-based compression,
 this approach uses only embedding computations to improve responsiveness and reduce cost.
 LangSmith tracking is applied via the @traceable decorator.
+
+Note: I guess this kind of retrieval method is quite foolish.
+      Since similarity doesn't represent the importance of responding user's query,
+      I found that the result is NOT good always. To ensure better results, I'd like to use
+      LLM-applied compression method. (Take a look at ./contextual_compression_retrieval_llm.py")
+      LLM-applied compression costs a little bit more than this method, but it's worth it.
 """
 
 import os
