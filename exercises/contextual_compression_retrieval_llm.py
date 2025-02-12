@@ -1,4 +1,4 @@
-# contextual_compression_retrieval.py
+# contextual_compression_retrieval_llm.py
 """
 Contextual Compression Retrieval with Auditing and Semantic Splitting
 
