@@ -15,7 +15,6 @@ from operator import itemgetter
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnableLambda
-from langchain_core.prompts import PromptTemplate
 from langchain_community.document_transformers import LongContextReorder
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
